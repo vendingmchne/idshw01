@@ -38,7 +38,6 @@ perfect_reviews_arranged <- arrange(perfect_reviews, desc(number_of_reviews))
 ex_1_ans_2 <- head(perfect_reviews_arranged, n = 1)
 ex_1_ans_2
 
-
 ```
 
 
@@ -51,26 +50,42 @@ Answer 2: The ID of the perfect AirBNB with the largest number of reviews is 860
 ## EXERCISE 2
 
 ```{r hw1-ex2}
-# remove this comment and add the code for Exercise 2 here
+bnb_oldtown <- filter(edibnb, neighbourhood == "Old Town")
+bnb_oldtown_100 <- filter(bnb_oldtown, price > 100)
+ex_2_ans_1 <- count(bnb_oldtown_100)
+ex_2_ans_1
 
+southside_4ppl <- filter(edibnb, neighbourhood == "Southside" & accommodates >= 4)
+ex_2_price <- select(southside_4ppl, price)
+min(ex_2_price)
+
+mean(ex_2_price$price, na.rm = TRUE)
+
+max(ex_2_price)
 ```
 
 
-_Remove this text, and add your answer for Exercise 2 here._
+Answer 1: There are 494 AirBNB listings in Old Town with a one-night-stay price of more than £100
 
+Answer 2: The minimum price for Southside AirBNB listings that can accommodate 4 people is £10. The mean price for the listings described is £153 to the nearest pound. The maximum price for the listings is £800
 
 ------------------------------------------------------------------------------
 
 ## EXERCISE 3
 
 ```{r hw1-ex3}
-# remove this comment and add the code for Exercise 3 here
+bnb_newington <- filter(edibnb, neighbourhood == "Newington")
+bnb_newington_bathrooms <- bnb_newington %>% select(id, neighbourhood, bathrooms)
+count(bnb_newington_bathrooms, bathrooms)
 
+bathrooms_adjusted_df <- edibnb %>% mutate("bathrooms_adjusted" = ceiling(bathrooms))
+count(bathrooms_adjusted_df, bathrooms, bathrooms_adjusted)
+
+bath_bigger_bed <- filter(bathrooms_adjusted_df, bathrooms_adjusted > bedrooms)
+count(bath_bigger_bed)
 ```
 
-
-_Remove this text, and add your answer for Exercise 3 here._
-
+There are 963 total AirBNBs in Edinburgh where the adjusted number of bathrooms is greater than the number of bedrooms. 
 
 
 ------------------------------------------------------------------------------
