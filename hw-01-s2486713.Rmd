@@ -1,6 +1,6 @@
 ---
 title: "hw-01"
-author: "Your Name (S000000)"
+author: "Raven Callaghan (S2486713)"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -17,6 +17,8 @@ knitr::opts_chunk$set(out.width = "100%")
 ```{r load-packages, message=FALSE}
 library(tidyverse)
 library(lubridate)
+library(readxl)
+
 
 edibnb <- read_csv("data/edibnb.csv")
 council <- read_csv("data/council_assessments.csv")
@@ -28,12 +30,21 @@ council <- read_csv("data/council_assessments.csv")
 ## EXERCISE 1
 
 ```{r hw1-ex1}
-# remove this comment and add the code for Exercise 1 here
+ex_1_ans_1 <- colSums(is.na(edibnb))
+ex_1_ans_1
+
+perfect_reviews <- filter(edibnb, review_scores_rating == 100)
+perfect_reviews_arranged <- arrange(perfect_reviews, desc(number_of_reviews))
+ex_1_ans_2 <- head(perfect_reviews_arranged, n = 1)
+ex_1_ans_2
+
 
 ```
 
 
-_Remove this text, and add your answer for Exercise 1 here._
+Answer 1: price, neighbourhood, bathrooms, bedrooms, beds, and review_scores_rating are all variables with N/A entries in the dataset.
+
+Answer 2: The ID of the perfect AirBNB with the largest number of reviews is 860170. 
 
 ------------------------------------------------------------------------------
 
