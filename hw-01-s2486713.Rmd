@@ -93,12 +93,20 @@ There are 963 total AirBNBs in Edinburgh where the adjusted number of bathrooms 
 ## EXERCISE 4
 
 ```{r hw1-ex4}
-# remove this comment and add the code for Exercise 4 here
+council_correct_date <- council %>% mutate(assessment_date_correct = dmy(assessment_date))
+min(council_correct_date$assessment_date_correct)
+max(council_correct_date$assessment_date_correct)
 
+#This is to ensure that the range can specifically be defined as May 2022
+
+council_may_list <- council_correct_date %>% filter(between(assessment_date_correct, as.Date('2022-05-01'), as.Date('2022-05-31')))
+count(council_may_list)
 ```
 
 
-_Remove this text, and add your answer for Exercise 4 here._
+There were 296 inspections by the council in the month of May 2022. 
+
+
 
 
 ------------------------------------------------------------------------------
