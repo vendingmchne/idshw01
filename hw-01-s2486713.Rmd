@@ -93,7 +93,8 @@ There are 963 total AirBNBs in Edinburgh where the adjusted number of bathrooms 
 ## EXERCISE 4
 
 ```{r hw1-ex4}
-council_correct_date <- council %>% mutate(assessment_date_correct = dmy(assessment_date))
+edibnb_council <- left_join(edibnb, council, by = "id")
+council_correct_date <- edibnb_council %>% mutate(assessment_date_correct = dmy(assessment_date))
 min(council_correct_date$assessment_date_correct)
 max(council_correct_date$assessment_date_correct)
 
@@ -101,12 +102,25 @@ max(council_correct_date$assessment_date_correct)
 
 council_may_list <- council_correct_date %>% filter(between(assessment_date_correct, as.Date('2022-05-01'), as.Date('2022-05-31')))
 count(council_may_list)
+
+
+
+council_correct_date_assessed <- council_correct_date %>% mutate(assessed = case_when(is.na(assessment_date_correct) ~ "No", TRUE ~ "Yes"))
+neighbourhood_assessed <- count(council_correct_date_assessed, neighbourhood, assessed)
+neighbourhood_data <- count(edibnb, neighbourhood)
+neighbourhood_assessed_data <- left_join(neighbourhood_assessed, neighbourhood_data, by = "neighbourhood")
+colnames(neighbourhood_assessed_data) <- c("neighbourhood", "assessed", "count", "total")
+neighbourhood_assessed_yes <- filter(neighbourhood_assessed_data, assessed == "Yes")
+neighbourhood_assessed_proportion <- neighbourhood_assessed_yes %>% mutate(proportion = count/total)
+neighbourhood_barplotdata <- select(neighbourhood_assessed_proportion, neighbourhood, proportion)
+                                                                
+ggplot(data = neighbourhood_barplotdata) + geom_bar(mapping = aes(x = neighbourhood, y = proportion, fill = neighbourhood),  stat = "identity") + coord_flip()
 ```
 
 
 There were 296 inspections by the council in the month of May 2022. 
 
-
+It is clear from the bar chart that Leith's assessment rate is significantly larger than that of any other borough, suggesting a significant bias toward properties in this neighbourhood.
 
 
 ------------------------------------------------------------------------------
